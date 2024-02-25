@@ -12,10 +12,18 @@ form.addEventListener('input', evt => {
 
 form.addEventListener('submit', evt => {
   evt.preventDefault();
-  console.log(
-    evt.target.elements.message.value,
-    evt.target.elements.email.value
-  );
-  localStorage.removeItem(localStorageKey);
-  form.reset();
+  if (
+    evt.target.elements.message.value !== '' &&
+    evt.target.elements.email.value !== ''
+  ) {
+    console.log(
+      evt,
+      evt.target.elements.message.value,
+      evt.target.elements.email.value
+    );
+    localStorage.removeItem(localStorageKey);
+    form.reset();
+  } else {
+    alert('Please fill in all the fields!');
+  }
 });
