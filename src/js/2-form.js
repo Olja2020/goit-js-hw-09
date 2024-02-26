@@ -1,15 +1,27 @@
-const form = document.querySelector('.feedback-form');
-const textarea = form.elements.message;
-const emailForm = form.elements.email;
-const localStorageKey = 'feedback-form-state';
 
-textarea.value = localStorage.getItem(localStorageKey) ?? '';
-emailForm.value = localStorage.getItem(localStorageKey) ?? '';
+ const form = document.querySelector('.feedback-form');
 
-form.addEventListener('input', evt => {
-  localStorage.setItem(localStorageKey, evt.target.value);
+
+  const localStorageKey = 'feedback-form-state';
+
+  form.addEventListener('input', () => {
+    const data = {
+        email: form.elements.email.value.trim(),
+        message: form.elements.message.value.trim(),
+    };
+    localStorage.setItem(localStorageKey, JSON.stringify(data));
 });
 
+
+ let getData = JSON.parse(localStorage.getItem(localStorageKey));
+
+ if (getData) {
+  
+  form.elements.email.value  = getData.email;
+  form.elements.message.value = getData.message;
+  
+ }
+ 
 form.addEventListener('submit', evt => {
   evt.preventDefault();
   if (
@@ -17,9 +29,8 @@ form.addEventListener('submit', evt => {
     evt.target.elements.email.value !== ''
   ) {
     console.log(
-      evt,
-      evt.target.elements.message.value,
-      evt.target.elements.email.value
+      {email: evt.target.elements.email.value,
+      message: evt.target.elements.message.value,}
     );
     localStorage.removeItem(localStorageKey);
     form.reset();
@@ -27,3 +38,4 @@ form.addEventListener('submit', evt => {
     alert('Please fill in all the fields!');
   }
 });
+
